@@ -2,7 +2,8 @@ package com.ecommerce.system.shopping_cart_service.service;
 
 import com.ecommerce.system.shopping_cart_service.exception.ProductNotFoundException;
 import com.ecommerce.system.shopping_cart_service.mapper.ProductMapper;
-import com.ecommerce.system.shopping_cart_service.model.dto.ProductDto;
+import com.ecommerce.system.shopping_cart_service.model.dto.ProductRequestDto;
+import com.ecommerce.system.shopping_cart_service.model.dto.ProductResponseDto;
 import com.ecommerce.system.shopping_cart_service.model.entity.Product;
 import com.ecommerce.system.shopping_cart_service.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductDto addProduct(ProductDto product) {
+    public ProductResponseDto addProduct(ProductRequestDto product) {
         return ProductMapper.toDto(productRepository.save(ProductMapper.toEntity(product)));
     }
 
-    public ProductDto updateProduct(Long id, ProductDto updatedProduct) {
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto updatedProduct) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
@@ -35,12 +36,12 @@ public class ProductService {
         return ProductMapper.toDto( productRepository.save(existingProduct));
     }
 
-    public ProductDto getProductById(Long id) {
+    public ProductResponseDto getProductById(Long id) {
         return ProductMapper.toDto(productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id)));
     }
 
-    public List<ProductDto> getAllProducts() {
+    public List<ProductResponseDto> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return ProductMapper.toDtoList(products);
     }

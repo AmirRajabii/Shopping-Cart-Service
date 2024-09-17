@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class ProductResponseDto {
+
+    private Long id;
 
     @NotBlank(message = "Product name cannot be blank")
     @Size(min = 2, max = 100, message = "Product name must be between 2 and 100 characters")
