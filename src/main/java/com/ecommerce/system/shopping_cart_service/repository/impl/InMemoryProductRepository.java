@@ -1,6 +1,7 @@
-package com.ecommerce.system.shopping_cart_service.repository;
+package com.ecommerce.system.shopping_cart_service.repository.impl;
 
 import com.ecommerce.system.shopping_cart_service.model.entity.Product;
+import com.ecommerce.system.shopping_cart_service.repository.ProductRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

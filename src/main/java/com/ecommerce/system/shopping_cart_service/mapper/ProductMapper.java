@@ -12,37 +12,37 @@ public class ProductMapper {
         if (productDto == null) {
             return null;
         }
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setQuantityInStock(productDto.getQuantityInStock());
-        return product;
+        return Product.builder()
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .price(productDto.getPrice())
+                .quantityInStock(productDto.getQuantityInStock())
+                .build();
     }
 
     public static Product toEntity(ProductRequestDto productDto) {
         if (productDto == null) {
             return null;
         }
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setQuantityInStock(productDto.getQuantityInStock());
-        return product;
+        return Product.builder()
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .price(productDto.getPrice())
+                .quantityInStock(productDto.getQuantityInStock())
+                .build();
     }
 
     public static ProductResponseDto toDto(Product product) {
         if (product == null) {
             return null;
         }
-        ProductResponseDto productDto = new ProductResponseDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setDescription(product.getDescription());
-        productDto.setPrice(product.getPrice());
-        productDto.setQuantityInStock(product.getQuantityInStock());
-        return productDto;
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .quantityInStock(product.getQuantityInStock())
+                .build();
     }
 
     public static List<ProductResponseDto> toDtoList(List<Product> products) {
@@ -51,9 +51,4 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    public static List<Product> toEntityList(List<ProductResponseDto> productDtos) {
-        return productDtos.stream()
-                .map(ProductMapper::toEntity)
-                .collect(Collectors.toList());
-    }
 }

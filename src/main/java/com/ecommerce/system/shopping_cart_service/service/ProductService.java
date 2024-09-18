@@ -4,6 +4,7 @@ import com.ecommerce.system.shopping_cart_service.exception.ProductNotFoundExcep
 import com.ecommerce.system.shopping_cart_service.mapper.ProductMapper;
 import com.ecommerce.system.shopping_cart_service.model.dto.ProductRequestDto;
 import com.ecommerce.system.shopping_cart_service.model.dto.ProductResponseDto;
+import com.ecommerce.system.shopping_cart_service.model.dto.ShoppingCartResponseDto;
 import com.ecommerce.system.shopping_cart_service.model.entity.Product;
 import com.ecommerce.system.shopping_cart_service.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ProductService {
         existingProduct.setPrice(updatedProduct.getPrice());
         existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
 
-        return ProductMapper.toDto( productRepository.save(existingProduct));
+        return ProductMapper.toDto(productRepository.save(existingProduct));
     }
 
     public ProductResponseDto getProductById(Long id) {
@@ -52,5 +53,4 @@ public class ProductService {
         }
         productRepository.deleteById(id);
     }
-
 }
