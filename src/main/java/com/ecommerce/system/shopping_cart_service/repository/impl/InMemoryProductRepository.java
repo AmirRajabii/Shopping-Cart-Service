@@ -44,4 +44,13 @@ public class InMemoryProductRepository implements ProductRepository {
     public boolean existsById(Long id) {
         return productStore.containsKey(id);
     }
+
+    @Override
+    public void changeQuantityInStock(long id, int quantity) {
+        Optional.ofNullable(productStore.get(id))
+                .ifPresent(product -> {
+                    product.setQuantityInStock(quantity);
+                    productStore.put(id, product);
+                });
+    }
 }

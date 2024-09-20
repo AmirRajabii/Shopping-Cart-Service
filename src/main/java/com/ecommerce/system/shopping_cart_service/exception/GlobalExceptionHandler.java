@@ -19,6 +19,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ShoppingCartNotActiveException.class)
+    public ResponseEntity<String> handleProductNotFound(ShoppingCartNotActiveException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ShoppingCartNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFound(ShoppingCartNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(CartItemNotFoundException.class)
     public ResponseEntity<String> handleProductNotFound(CartItemNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

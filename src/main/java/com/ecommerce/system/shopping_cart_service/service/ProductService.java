@@ -1,10 +1,10 @@
 package com.ecommerce.system.shopping_cart_service.service;
 
+import com.ecommerce.system.shopping_cart_service.exception.InvalidQuantityException;
 import com.ecommerce.system.shopping_cart_service.exception.ProductNotFoundException;
 import com.ecommerce.system.shopping_cart_service.mapper.ProductMapper;
 import com.ecommerce.system.shopping_cart_service.model.dto.ProductRequestDto;
 import com.ecommerce.system.shopping_cart_service.model.dto.ProductResponseDto;
-import com.ecommerce.system.shopping_cart_service.model.dto.ShoppingCartResponseDto;
 import com.ecommerce.system.shopping_cart_service.model.entity.Product;
 import com.ecommerce.system.shopping_cart_service.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +52,18 @@ public class ProductService {
             throw new ProductNotFoundException(id);
         }
         productRepository.deleteById(id);
+    }
+
+    public void changeQuantityInStock(Long id, Integer quantity) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+        validateStockAvailability(product, quantity);
+        productRepository.changeQuantityInStock(id, quantity);
+    }
+
+    private void validateStockAvailability(Product product, Integer requestedQuantity) {
+        if (product.getQuantityInStock() < requestedQuantity) {
+            throw new InvalidQuantityException(product.getId(), product.getQuantityInStock());
+        }
     }
 }
