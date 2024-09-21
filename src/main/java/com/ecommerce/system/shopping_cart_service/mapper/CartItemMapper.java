@@ -12,32 +12,21 @@ import java.util.stream.Collectors;
 public class CartItemMapper {
 
     public static CartItem toEntity(CartItemRequestDto cartItemRequestDto) {
-        if (cartItemRequestDto == null) {
-            return null;
-        }
-        return CartItem.builder()
-                .shoppingCart(ShoppingCart.builder().id(cartItemRequestDto.getShoppigCartId()).build())
-                .product(Product.builder().id(cartItemRequestDto.getProductId()).build())
+        return cartItemRequestDto == null ? null : CartItem.builder()
+                .shoppingCart(
+                        ShoppingCart.builder()
+                                .id(cartItemRequestDto.getShoppigCartId())
+                                .build())
+                .product(
+                        Product.builder()
+                                .id(cartItemRequestDto.getProductId())
+                                .build())
                 .quantity(cartItemRequestDto.getQuantity())
                 .build();
     }
 
-    public static CartItem toEntity(CartItemResponseDto cartItemResponseDto) {
-        if (cartItemResponseDto == null) {
-            return null;
-        }
-        return CartItem.builder()
-                .shoppingCart(ShoppingCart.builder().id(cartItemResponseDto.getShoppigCartId()).build())
-                .product(Product.builder().id(cartItemResponseDto.getProductId()).build())
-                .quantity(cartItemResponseDto.getQuantity())
-                .build();
-    }
-
     public static CartItemResponseDto toDto(CartItem cartItem) {
-        if (cartItem == null) {
-            return null;
-        }
-        return CartItemResponseDto.builder()
+        return cartItem == null ? null : CartItemResponseDto.builder()
                 .id(cartItem.getId())
                 .shoppigCartId(cartItem.getShoppingCart().getId())
                 .productId(cartItem.getProduct().getId())
@@ -46,7 +35,8 @@ public class CartItemMapper {
     }
 
     public static List<CartItemResponseDto> toDtoList(List<CartItem> cartItems) {
-        return cartItems.stream()
+        return cartItems.parallelStream()
+                .unordered()
                 .map(CartItemMapper::toDto)
                 .collect(Collectors.toList());
     }

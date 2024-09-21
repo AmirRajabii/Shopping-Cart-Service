@@ -4,6 +4,9 @@ import com.ecommerce.system.shopping_cart_service.aop.CheckCartActive;
 import com.ecommerce.system.shopping_cart_service.exception.InvalidQuantityException;
 import com.ecommerce.system.shopping_cart_service.exception.ProductNotFoundException;
 import com.ecommerce.system.shopping_cart_service.exception.ShoppingCartNotFoundException;
+import com.ecommerce.system.shopping_cart_service.model.dto.ShoppingCartItemDto;
+import com.ecommerce.system.shopping_cart_service.model.dto.ShoppingCartResponseDto;
+import com.ecommerce.system.shopping_cart_service.model.entity.CartItem;
 import com.ecommerce.system.shopping_cart_service.model.entity.Product;
 import com.ecommerce.system.shopping_cart_service.model.entity.ShoppingCart;
 import com.ecommerce.system.shopping_cart_service.model.enums.ShoppingCartStatus;
@@ -12,6 +15,9 @@ import com.ecommerce.system.shopping_cart_service.repository.ProductRepository;
 import com.ecommerce.system.shopping_cart_service.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShoppingCartService {
@@ -64,5 +70,22 @@ public class ShoppingCartService {
         if (product.getQuantityInStock() < requestedQuantity) {
             throw new InvalidQuantityException(product.getId(), product.getQuantityInStock());
         }
+    }
+
+    public ShoppingCartResponseDto getShoppingCart(Long id) {
+        List<CartItem> cartItems = cartItemRepository.findByShoppingCartId(id);
+        List<ShoppingCartItemDto> shoppingCartItemDtos = new ArrayList<>();
+        cartItems.forEach(cartItem -> {
+            Product product = productRepository.findById(cartItem.getProduct().getId())
+                    .orElseThrow(() -> new ProductNotFoundException(cartItem.getProduct().getId()));
+            shoppingCartItemDtos.add(
+                    new ShoppingCartItemDto(
+                            product.getName(),
+                            cartItem.getQuantity(),
+                            product.getPrice()
+                    )
+            );
+        });
+        return new ShoppingCartResponseDto(shoppingCartItemDtos);
     }
 }

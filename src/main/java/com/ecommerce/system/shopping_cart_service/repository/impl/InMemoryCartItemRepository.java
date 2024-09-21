@@ -5,20 +5,20 @@ import com.ecommerce.system.shopping_cart_service.repository.CartItemRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryCartItemRepository implements CartItemRepository {
 
     private final Map<Long, CartItem> cartItemStore = new HashMap<>();
-    private long cartItemIdSequence = 0;
+    private final AtomicLong cartItemIdSequence = new AtomicLong(0);
 
 
     @Override
     public CartItem save(CartItem cartItem) {
         if (cartItem.getId() == null) {
-            cartItemIdSequence++;
-            cartItem.setId(cartItemIdSequence);
+            cartItem.setId(cartItemIdSequence.getAndIncrement());
         }
         cartItemStore.put(cartItem.getId(), cartItem);
         return cartItem;
@@ -49,6 +49,7 @@ public class InMemoryCartItemRepository implements CartItemRepository {
                     cartItemStore.put(id, cartItem);
                 });
     }
+
     public boolean existsById(Long id) {
         return cartItemStore.containsKey(id);
     }

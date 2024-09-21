@@ -34,7 +34,6 @@ public class CartItemService {
         this.shoppingCartRepository = shoppingCartRepository;
     }
 
-    @CheckCartActive
     public CartItemResponseDto addCartItem(CartItemRequestDto cartItemRequestDto) {
         shoppingCartRepository.findById(cartItemRequestDto.getShoppigCartId())
                 .orElseThrow(() -> new ShoppingCartNotFoundException(cartItemRequestDto.getShoppigCartId()));
@@ -47,7 +46,6 @@ public class CartItemService {
         return CartItemMapper.toDto(cartItemRepository.save(CartItemMapper.toEntity(cartItemRequestDto)));
     }
 
-    @CheckCartActive
     public void changeQuantity(Long id, Integer quantity) {
         CartItem cartItem = getCartItemById(id);
         Product product = productRepository.findById(cartItem.getProduct().getId())
@@ -65,24 +63,6 @@ public class CartItemService {
                 .orElseThrow(() -> new CartItemNotFoundException(cartItemId));
     }
 
-    public ShoppingCartResponseDto getShoppingCart(Long id) {
-        List<CartItem> cartItems = cartItemRepository.findByShoppingCartId(id);
-        List<ShoppingCartItemDto> shoppingCartItemDtos = new ArrayList<>();
-        cartItems.forEach(cartItem -> {
-            Product product = productRepository.findById(cartItem.getProduct().getId())
-                    .orElseThrow(() -> new ProductNotFoundException(cartItem.getProduct().getId()));
-            shoppingCartItemDtos.add(
-                    new ShoppingCartItemDto(
-                            product.getName(),
-                            cartItem.getQuantity(),
-                            product.getPrice()
-                    )
-            );
-        });
-        return new ShoppingCartResponseDto(shoppingCartItemDtos);
-    }
-
-    @CheckCartActive
     public void deleteCartItemById(Long id) {
         if (!cartItemRepository.existsById(id)) {
             throw new ProductNotFoundException(id);

@@ -8,23 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductMapper {
-    public static Product toEntity(ProductResponseDto productDto) {
-        if (productDto == null) {
-            return null;
-        }
-        return Product.builder()
-                .name(productDto.getName())
-                .description(productDto.getDescription())
-                .price(productDto.getPrice())
-                .quantityInStock(productDto.getQuantityInStock())
-                .build();
-    }
-
     public static Product toEntity(ProductRequestDto productDto) {
-        if (productDto == null) {
-            return null;
-        }
-        return Product.builder()
+        return productDto == null ? null : Product.builder()
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .price(productDto.getPrice())
@@ -33,10 +18,7 @@ public class ProductMapper {
     }
 
     public static ProductResponseDto toDto(Product product) {
-        if (product == null) {
-            return null;
-        }
-        return ProductResponseDto.builder()
+        return product == null ? null : ProductResponseDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
@@ -46,7 +28,8 @@ public class ProductMapper {
     }
 
     public static List<ProductResponseDto> toDtoList(List<Product> products) {
-        return products.stream()
+        return products.parallelStream()
+                .unordered()
                 .map(ProductMapper::toDto)
                 .collect(Collectors.toList());
     }

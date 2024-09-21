@@ -35,18 +35,20 @@ class ProductServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        productRequestDto = new ProductRequestDto();
-        productRequestDto.setName("Test Product");
-        productRequestDto.setDescription("Description of Test Product");
-        productRequestDto.setPrice(99.99);
-        productRequestDto.setQuantityInStock(10);
+        productRequestDto = ProductRequestDto.builder()
+                .name("Test Product")
+                .description("Test Description")
+                .price(99.99)
+                .quantityInStock(10)
+                .build();
 
-        product = new Product();
-        product.setId(1L);
-        product.setName(productRequestDto.getName());
-        product.setDescription(productRequestDto.getDescription());
-        product.setPrice(productRequestDto.getPrice());
-        product.setQuantityInStock(productRequestDto.getQuantityInStock());
+        product = Product.builder()
+                .id(1L)
+                .name(productRequestDto.getName())
+                .description(productRequestDto.getDescription())
+                .price(productRequestDto.getPrice())
+                .quantityInStock(productRequestDto.getQuantityInStock())
+                .build();
 
         productResponseDto = ProductMapper.toDto(product);
     }
@@ -67,11 +69,12 @@ class ProductServiceTest {
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
-        ProductRequestDto updatedProduct = new ProductRequestDto();
-        updatedProduct.setName("Updated Product");
-        updatedProduct.setDescription("Updated Description");
-        updatedProduct.setPrice(89.99);
-        updatedProduct.setQuantityInStock(5);
+        ProductRequestDto updatedProduct = ProductRequestDto.builder()
+                .name("Updated Product")
+                .description("Updated Description")
+                .price(89.99)
+                .quantityInStock(5)
+                .build();
 
         ProductResponseDto result = productService.updateProduct(1L, updatedProduct);
 

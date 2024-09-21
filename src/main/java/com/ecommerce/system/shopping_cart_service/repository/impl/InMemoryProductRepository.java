@@ -6,18 +6,18 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
 
     private final Map<Long, Product> productStore = new HashMap<>();
-    private long productIdSequence = 0;
+    private final AtomicLong productIdSequence = new AtomicLong(0);
 
     @Override
     public Product save(Product product) {
         if (product.getId() == null) {
-            productIdSequence++;
-            product.setId(productIdSequence);
+            product.setId(productIdSequence.getAndIncrement());
             product.setCreatedAt(LocalDateTime.now());
         }
         product.setUpdatedAt(LocalDateTime.now());

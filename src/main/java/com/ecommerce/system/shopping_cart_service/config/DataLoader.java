@@ -21,7 +21,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         //Create a defualt shopping cart for test
         ShoppingCart shoppingCart = ShoppingCart.builder()

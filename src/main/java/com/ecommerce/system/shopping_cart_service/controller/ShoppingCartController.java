@@ -37,14 +37,14 @@ public class ShoppingCartController {
     }
 
     @GetMapping("cart-items/{id}")
-    public ResponseEntity<List<CartItemResponseDto>> getShppingCartItems(@PathVariable Long id) {
+    public ResponseEntity<List<CartItemResponseDto>> getShoppingCartItems(@PathVariable Long id) {
         List<CartItemResponseDto> cartItemResponseDtos = cartItemService.getCartItems(id);
         return new ResponseEntity<>(cartItemResponseDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingCartResponseDto> getShppingCart(@PathVariable Long id) {
-        ShoppingCartResponseDto shoppingCartResponseDtos = cartItemService.getShoppingCart(id);
+    public ResponseEntity<ShoppingCartResponseDto> getShoppingCart(@PathVariable Long id) {
+        ShoppingCartResponseDto shoppingCartResponseDtos = shoppingCartService.getShoppingCart(id);
         return new ResponseEntity<>(shoppingCartResponseDtos, HttpStatus.OK);
     }
 
